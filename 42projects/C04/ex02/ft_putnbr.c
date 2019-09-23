@@ -6,11 +6,16 @@
 /*   By: dmachota <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 17:36:41 by dmachota          #+#    #+#             */
-/*   Updated: 2019/09/22 17:45:04 by dmachota         ###   ########.fr       */
+/*   Updated: 2019/09/23 16:08:54 by dmachota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_putchar(char c);
+#include <unistd.h>
+
+int		ft_putchar(char c)
+{
+	write(1, &c, 1);
+}
 
 void	ft_putnbr(int nb)
 {

@@ -6,34 +6,28 @@
 /*   By: dmachota <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 17:56:33 by dmachota          #+#    #+#             */
-/*   Updated: 2019/09/22 18:54:12 by dmachota         ###   ########.fr       */
+/*   Updated: 2019/09/23 17:08:57 by dmachota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_atoi(char *str)
+int	ft_atoi(const char *str)
 {
-	int res;
-	int sign;
-	int i;
+	int	res;
+	int	negative;
 
+	negative = 1;
 	res = 0;
-	sign = 0;
-	i = 0;
-	while ((str[i] == ' ') || (str[i] == '\t') || (str[i] == '\n') ||
-			(str[i] == '\v') || (str[i] == '\r') || (str[i] == '\f'))
-		i++;
-	if (str[i] == '-')
-		sign = 1;
-	if (str[i] == '+' || str[i] == '-')
-		i++;
-	while (str[i] && (str[i] >= '0') && (str[i] <= '9'))
+	while (*str && (*str == ' ' || *str == '\n' || *str == '\t' ||
+			*str == '\v' || *str == '\f' || *str == '\r'))
+		++str;
+	if (*str == '-')
+		negative = -1;
+	if (*str == '-' || *str == '+')
+		++str;
+	while (*str && *str >= '0' && *str <= '9')
 	{
-		res = res * 10;
-		res += (int)str[i] - 0;
-		i++;
+		res = res * 10 + (*str - 48);
+		++str;
 	}
-	if (sign == 1)
-		return (-res);
-	else
-		return (res);
+	return (res * negative);
 }

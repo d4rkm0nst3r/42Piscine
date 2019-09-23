@@ -6,15 +6,9 @@
 /*   By: dmachota <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 16:31:14 by dmachota          #+#    #+#             */
-/*   Updated: 2019/09/22 16:33:18 by dmachota         ###   ########.fr       */
+/*   Updated: 2019/09/23 16:05:14 by dmachota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-int		ft_putchar(char c)
-{
-	write(1, &c, 1);
-	return (0);
-}
 
 int		ft_strlen(char *str)
 {
