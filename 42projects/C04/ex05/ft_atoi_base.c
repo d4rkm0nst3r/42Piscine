@@ -6,95 +6,43 @@
 /*   By: dmachota <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 19:23:19 by dmachota          #+#    #+#             */
-/*   Updated: 2019/09/23 17:12:23 by dmachota         ###   ########.fr       */
+/*   Updated: 2019/09/24 11:13:21 by dmachota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	get_base_length(char *base)
+int		nbr_inbase(char c, int base)
 {
-	int	base_length;
-	int	j;
-
-	base_length = 0;
-	while (base[base_length])
-	{
-		if (base[base_length] == '-' || base[base_length] == '+')
-			return (0);
-		j = base_length + 1;
-		while (base[j])
-		{
-			if (base[base_length] == base[j])
-				return (0);
-			++j;
-		}
-		++base_length;
-	}
-	if (base_length < 2)
-		return (0);
-	return (base_length);
+	if (base <= 10)
+		return (c >= '0' && c <= '9');
+	return ((c >= '0' && c <= '9') || (c >= 'A' && c <= ('A' + base - 10)) || \
+	(c >= 'a' && c <= ('a' + base - 10)));
 }
 
-int	check_errors(char *str, char *base)
+int		ft_atoi_base(const char *str, int base)
 {
-	int	i;
-	int	j;
-	int	start;
+	int		i;
+	int		nbr;
+	int		sign;
 
-	start = 0;
-	while (str[start] != '\0' && (str[start] == ' ' || str[start] == '\t' ||
-		str[start] == '\r' || str[start] == '\n' || str[start] == '\v' ||
-		str[start] == '\f'))
-		start++;
-	i = start;
-	while (str[i])
-	{
-		j = 0;
-		while (base[j] && (str[i] != base[j] ||
-				(str[i] == '-' || str[i] == '+')))
-			++j;
-		if (str[i] != base[j] && str[i] != '-' && str[i] != '+')
-			return (0);
-		i++;
-	}
-	if (i == 0)
+	if (!str[0] || (base < 2 || base > 16))
 		return (0);
-	return (1);
-}
-
-int	get_nb(char c, char *base)
-{
-	int	i;
-
-	i = 0;
-	while (base[i] && base[i] != c)
-		i++;
-	return (i);
-}
-
-int	ft_atoi_base(char *str, char *base)
-{
-	int	s;
-	int	i;
-	int	res;
-	int	negative;
-	int	base_length;
-
-	if (!(base_length = get_base_length(base)) || !check_errors(str, base))
-		return (0);
-	s = 0;
-	while (str[s] != '\0' && (str[s] == ' ' || str[s] == '\t' || str[s] == '\r'
-			|| str[s] == '\n' || str[s] == '\v' || str[s] == '\f'))
-		s++;
-	i = s - 1;
-	res = 0;
-	negative = 1;
-	while (str[++i] && (((str[i] == '-' || str[i] == '+') && i == s) ||
-			(str[i] != '-' && str[i] != '+')))
+	nbr = 0;
+	sign = 1;
+	while (str[i] == '\t' || str[i] == '\v' || str[i] == '\n' || \
+		str[i] == ' ' || str[i] == '\r' || str[i] == '\f')
+		i += 1;
+	if (str[i] == '-' || str[i] == '+')
+		if (str[i++] == '-')
+			sign *= -1;
+	while (str[i] && nbr_inbase(str[i], base))
 	{
-		if (str[i] == '-')
-			negative = -1;
-		else if (str[i] != '+')
-			res = (res * base_length) + (get_nb(str[i], base));
+		if (str[i] >= 'A' && 'F' >= str[i])
+			nbr = (nbr * base) + (str[i] - 'A' + 10);
+		else if (str[i] >= 'a' && 'f' >= str[i])
+			nbr = (nbr * base) + (str[i] - 'a' + 10);
+		else
+			nbr = (nbr * base) + (str[i] - '0');
+		i += 1;
 	}
-	return (res * negative);
+	return (nbr * sign);
 }

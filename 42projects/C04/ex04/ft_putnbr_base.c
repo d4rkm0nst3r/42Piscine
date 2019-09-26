@@ -6,61 +6,61 @@
 /*   By: dmachota <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:59:02 by dmachota          #+#    #+#             */
-/*   Updated: 2019/09/23 17:10:35 by dmachota         ###   ########.fr       */
+/*   Updated: 2019/09/24 11:01:19 by dmachota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		check_base(char *base)
+void	ft_putchar(char c);
+
+int		error(char *str)
 {
 	int	i;
-	int	z;
+	int	j;
 
-	i = 0;
-	z = 0;
-	if (base[0] == '\0' || base[1] == '\0')
+	if (!str)
 		return (0);
-	while (base[i])
+	i = 0;
+	while (str[i])
 	{
-		z = i + 1;
-		if (base[i] == '+' || base[i] == '-')
+		if (str[i] == '-' || str[i] == '+')
 			return (0);
-		if (base[i] < 32 || base[i] > 126)
-			return (0);
-		while (base[z])
+		j = i + 1;
+		while (str[j])
 		{
-			if (base[i] == base[z])
+			if (str[i] == str[j])
 				return (0);
-			z++;
+			++j;
 		}
-		i++;
+		++i;
 	}
-	return (1);
+	if (i < 2)
+		return (0);
+	return (i);
 }
 
-void	ft_putnbr_base(int nbr, char *base)
+void	display(int nb, char *str, unsigned int str_length)
 {
-	int	size_base;
-	int	nbr_final[100];
-	int	i;
+	unsigned int	nbr;
 
-	i = 0;
-	size_base = 0;
-	if (check_base(base))
+	if (nb < 0)
 	{
-		if (nbr < 0)
-		{
-			nbr = -nbr;
-			ft_putchar('-');
-		}
-		while (base[size_base])
-			size_base++;
-		while (nbr)
-		{
-			nbr_final[i] = nbr % size_base;
-			nbr = nbr / size_base;
-			i++;
-		}
-		while (--i >= 0)
-			ft_putchar(base[nbr_final[i]]);
+		ft_putchar('-');
+		nbr = nb * -1;
 	}
+	else
+		nbr = nb;
+	if (nbr >= str_length)
+		display(nbr / str_length, str, str_length);
+	ft_putchar(str[nbr % str_length]);
+}
+
+void	ft_putnbr_base(int nb, char *str)
+{
+	unsigned int	str_length;
+
+	str_length = 2;
+	str_length = error(str);
+	if (!str_length)
+		return ;
+	display(nb, str, str_length);
 }

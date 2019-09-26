@@ -6,28 +6,32 @@
 /*   By: dmachota <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 17:56:33 by dmachota          #+#    #+#             */
-/*   Updated: 2019/09/23 17:08:57 by dmachota         ###   ########.fr       */
+/*   Updated: 2019/09/25 20:57:03 by dmachota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_atoi(const char *str)
+int		ft_atoi(char *str)
 {
-	int	res;
-	int	negative;
+	int		i;
+	int		signo;
+	int		x;
 
-	negative = 1;
-	res = 0;
-	while (*str && (*str == ' ' || *str == '\n' || *str == '\t' ||
-			*str == '\v' || *str == '\f' || *str == '\r'))
-		++str;
-	if (*str == '-')
-		negative = -1;
-	if (*str == '-' || *str == '+')
-		++str;
-	while (*str && *str >= '0' && *str <= '9')
+	signo = 1;
+	i = 0;
+	x = 0;
+	while ((str[i] <= 12 && str[i] >= 9) || (str[i] == 32))
+		i++;
+	while (str[i] == 43 || str[i] == 45)
 	{
-		res = res * 10 + (*str - 48);
-		++str;
+		if (str[i] == 45)
+			signo = signo * (-1);
+		i++;
 	}
-	return (res * negative);
+	while (str[i] <= 57 && str[i] >= 48)
+	{
+		x = x * 10 + (str[i] - 48);
+		i++;
+	}
+	x = x * signo;
+	return (x);
 }
