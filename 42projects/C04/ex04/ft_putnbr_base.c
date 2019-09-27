@@ -6,61 +6,75 @@
 /*   By: dmachota <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:59:02 by dmachota          #+#    #+#             */
-/*   Updated: 2019/09/24 11:01:19 by dmachota         ###   ########.fr       */
+/*   Updated: 2019/09/27 07:53:54 by dmachota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void	ft_putchar(char c);
+#include <unistd.h>
 
-int		error(char *str)
+void		ft_putchar(char c)
 {
-	int	i;
-	int	j;
-
-	if (!str)
-		return (0);
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '-' || str[i] == '+')
-			return (0);
-		j = i + 1;
-		while (str[j])
-		{
-			if (str[i] == str[j])
-				return (0);
-			++j;
-		}
-		++i;
-	}
-	if (i < 2)
-		return (0);
-	return (i);
+	write(1, &c, 1);
 }
 
-void	display(int nb, char *str, unsigned int str_length)
+int			check_twice(char *base, int length)
 {
-	unsigned int	nbr;
+	int i;
+	int j;
 
-	if (nb < 0)
+	i = 0;
+	j = length;
+	while (j >= 0)
 	{
-		ft_putchar('-');
-		nbr = nb * -1;
+		i = j - 1;
+		while (i >= 0)
+		{
+			if (base[i] == base[j])
+				return (1);
+			i--;
+		}
+		j--;
+	}
+	return (0);
+}
+
+int			is_valid_base(char *base)
+{
+	int i;
+
+	i = 0;
+	while (base[i] != '\0')
+	{
+		if (base[i] == '-' || base[i] == '+')
+			return (0);
+		i++;
+	}
+	if (i == 0 || i == 1 ||
+		check_twice(base, i))
+		return (0);
+	else
+		return (i);
+}
+
+void		recur(int n, char *base, int l)
+{
+	if (n < 1 - l || n > l - 1)
+		recur(n / l, base, l);
+	if (n < 0)
+	{
+		if (n > -l)
+			ft_putchar('-');
+		ft_putchar(base[-(n % l)]);
 	}
 	else
-		nbr = nb;
-	if (nbr >= str_length)
-		display(nbr / str_length, str, str_length);
-	ft_putchar(str[nbr % str_length]);
+		ft_putchar(base[n % l]);
 }
 
-void	ft_putnbr_base(int nb, char *str)
+void		ft_putnbr_base(int nbr, char *base)
 {
-	unsigned int	str_length;
+	int length;
 
-	str_length = 2;
-	str_length = error(str);
-	if (!str_length)
-		return ;
-	display(nb, str, str_length);
+	length = is_valid_base(base);
+	if (length)
+		recur(nbr, base, length);
 }

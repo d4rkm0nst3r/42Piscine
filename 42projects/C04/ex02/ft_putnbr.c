@@ -6,29 +6,34 @@
 /*   By: dmachota <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 17:36:41 by dmachota          #+#    #+#             */
-/*   Updated: 2019/09/26 18:35:12 by dmachota         ###   ########.fr       */
+/*   Updated: 2019/09/27 07:52:24 by dmachota         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 
+void	ft_putchar(char c)
+{
+	write(1, &c, 1);
+}
+
 void	ft_putnbr(int nb)
 {
-	unsigned int	nbaux;
-
-	if (nb < 0)
+	if (nb > -2147483648)
 	{
-		write(1, "-", 1);
-		nbaux = -1 * nb;
+		if (nb < 0)
+		{
+			ft_putchar('-');
+			nb = nb * -1;
+		}
+		if ((nb / 10) > 0)
+			ft_putnbr(nb / 10);
+		ft_putchar(nb % 10 + '0');
 	}
 	else
 	{
-		nbaux = nb;
+		ft_putchar('-');
+		ft_putchar('2');
+		ft_putnbr(147483648);
 	}
-	if (nbaux <= 10)
-	{
-		ft_putnbr(nbaux / 10);
-	}
-	nbaux = (nbaux % 10) + 48;
-	write(1, &nbaux, 1);
 }
